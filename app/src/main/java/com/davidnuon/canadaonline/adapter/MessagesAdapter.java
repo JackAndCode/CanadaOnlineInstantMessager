@@ -10,31 +10,36 @@ import android.widget.TextView;
 
 import com.davidnuon.canadaonline.R;
 import com.davidnuon.canadaonline.model.ChatMessage;
-import com.davidnuon.canadaonline.model.Conversation;
 
 import java.util.ArrayList;
 
 /**
  * Created by davidnuon on 12/13/14.
  */
-public class ConverstionAdapter extends BaseAdapter {
+public class MessagesAdapter extends BaseAdapter {
     public final String TAG = "CANADA/ConverstionAdapter";
     Context mContext;
-    ArrayList<Conversation> mConverstions;
+    ArrayList<ChatMessage> mMessages;
 
-    public ConverstionAdapter(Context mContext, ArrayList<Conversation> mConverstions) {
+    public MessagesAdapter(Context mContext, ArrayList<ChatMessage> mMessages) {
         this.mContext = mContext;
-        this.mConverstions = mConverstions;
+        this.mMessages = mMessages;
     }
 
     @Override
     public int getCount() {
-        return mConverstions.size();
+        return mMessages.size();
+    }
+
+    public void adpot(ArrayList<ChatMessage> other) {
+        mMessages.clear();
+        mMessages.addAll(other);
+        notifyDataSetChanged();
     }
 
     @Override
     public Object getItem(int i) {
-        return mConverstions.get(i);
+        return mMessages.get(i);
     }
 
     @Override
@@ -46,22 +51,15 @@ public class ConverstionAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         Log.i(TAG, "Inflating");
 
-        Conversation currentConversation = mConverstions.get(i);
+        ChatMessage chatMessage = mMessages.get(i);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_item_conversation, viewGroup, false);
 
-        TextView converstaionName = (TextView) rowView.findViewById(R.id.conversation_name);
+        TextView sender = (TextView) rowView.findViewById(R.id.conversation_name);
         TextView lastMessage = (TextView) rowView.findViewById(R.id.last_message);
 
-        converstaionName.setText(currentConversation.getConversationName());
-        String lastMessageString = "";
-        ArrayList<ChatMessage> messages = currentConversation.getMessages();
-        if( messages.size() < 1) {
-            lastMessageString = "No messages yet.";
-        } else  {
-            lastMessageString = messages.get(messages.size() - 1).getMessage();
-        }
-
+        sender.setText(chatMessage.getSender());
+        String lastMessageString = chatMessage.getMessage();
         lastMessage.setText(lastMessageString);
 
         return rowView;
