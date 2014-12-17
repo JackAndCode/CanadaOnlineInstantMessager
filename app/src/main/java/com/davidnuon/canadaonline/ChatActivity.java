@@ -1,5 +1,6 @@
 package com.davidnuon.canadaonline;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
@@ -12,7 +13,13 @@ import android.widget.ListView;
 import com.davidnuon.canadaonline.adapter.MessagesAdapter;
 import com.davidnuon.canadaonline.model.ChatMessage;
 import com.davidnuon.canadaonline.model.Conversation;
+import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -38,15 +45,16 @@ public class ChatActivity extends ActionBarActivity {
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                 if(keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                        mMessageInput.setText("");
+                        String message = mMessageInput.getText().toString();
+                        (new sendMessage(message)).execute();
+                        mMessageInput.getText().clear();
+                        return true;
                     }
                 }
 
                 return false;
             }
         });
-
-
     }
 
 
@@ -70,5 +78,52 @@ public class ChatActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    class sendMessage extends AsyncTask<Void, Void, Void> {
+
+        String message;
+        private boolean done;
+
+        sendMessage(String message) {
+            this.message = message;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(done) {
+                mConversation.refresh();
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            OkHttpClient client = new OkHttpClient();
+            RequestBody body = new FormEncodingBuilder()
+                    .add("method" ,  "write")
+                    .add("name" ,  "android")
+                    .add("message" , this.message)
+                    .add("to", mConversation.getConversationName())
+                    .add("language" ,  "EN")
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url("http://davidnuon.com/ernie-classic/?method=write")
+                    .post(body)
+                    .build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                if(response.isSuccessful()) {
+                    this.done = true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
     }
 }
