@@ -45,6 +45,7 @@ public class BuddyListActivity extends ActionBarActivity {
                 BuddyListActivity.this.startActivity(intent);
             }
         });
+
     }
 
     @Override

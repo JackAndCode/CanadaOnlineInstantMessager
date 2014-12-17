@@ -1,7 +1,10 @@
 package com.davidnuon.canadaonline.model;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.davidnuon.canadaonline.adapter.ConverstionAdapter;
 import com.davidnuon.canadaonline.adapter.MessagesAdapter;
@@ -34,12 +37,21 @@ public class Conversation {
         this(new ArrayList<ChatMessage>(), conversationName, false, null);
     }
 
+
+    Thread mRefresh;
     private Conversation(ArrayList<ChatMessage> messages, String conversationName, boolean isRead,  MessagesAdapter mAdapter) {
         this.messages = messages;
         this.conversationName = conversationName;
         this.isRead = isRead;
         this.mAdapter = mAdapter;
         (new getMessage(conversationName, "android")).execute();
+
+        if(mAdapter != null) {
+            if(mAdapter.getmContext() != null) {
+                this.ctx = mAdapter.getmContext();
+            }
+        }
+
     }
 
     public void refresh() {
@@ -48,6 +60,7 @@ public class Conversation {
         // a giant blob...
         // Sorry!
         // (not sorry).
+
         (new getMessage(conversationName, "android")).execute();
     }
 
@@ -59,6 +72,17 @@ public class Conversation {
 
     }
 
+    Context ctx;
+
+    public Context getCtx() {
+        return ctx;
+    }
+
+    public void setCtx(Context ctx) {
+        this.ctx = ctx;
+    }
+
+    public static String lastLangauge = "EN";
     class getMessage extends AsyncTask<Void, Void, Void> {
         String mName;
         String mTo;
@@ -73,9 +97,24 @@ public class Conversation {
             super.onPreExecute();
         }
 
+
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
+            if(ctx != null ) {
+                Intent sendIntent = new Intent("davidnuon.changelang");
+                sendIntent.setAction("davidnuon.changelang");
+                if(! messages.get(messages.size() - 1).getSender().equals("android")) {
+                    lastLangauge = messages.get(messages.size() - 1).getLanguage();
+                }
+
+                sendIntent.putExtra("language", lastLangauge);
+
+                ctx.sendBroadcast(sendIntent);
+                Log.i("OLAF", "Sending broadcast...");
+            }
+
             if (mAdapter != null) {
                 mAdapter.adpot(messages);
 

@@ -23,6 +23,10 @@ public class MessagesAdapter extends BaseAdapter {
     ListView mListview;
 
 
+    public Context getmContext() {
+        return mContext;
+    }
+
     public MessagesAdapter(Context mContext, ArrayList<ChatMessage> mMessages) {
         this.mContext = mContext;
         this.mMessages = mMessages;

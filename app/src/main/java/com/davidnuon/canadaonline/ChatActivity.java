@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -39,6 +40,13 @@ public class ChatActivity extends ActionBarActivity {
         mListView.setAdapter(mAdapter);
         String name = getIntent().getStringExtra("name");
         mConversation = new Conversation(name, mAdapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mConversation.refresh();
+            }
+        });
         mMessageInput = (EditText) findViewById(R.id.messageText);
         mMessageInput.setOnKeyListener(new View.OnKeyListener() {
             @Override
