@@ -1,7 +1,6 @@
 package com.davidnuon.canadaonline.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,14 +67,18 @@ public class MessagesAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        Log.i(TAG, "Inflating");
-
         ChatMessage chatMessage = mMessages.get(i);
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_item_conversation, viewGroup, false);
 
         TextView sender = (TextView) rowView.findViewById(R.id.conversation_name);
         TextView lastMessage = (TextView) rowView.findViewById(R.id.last_message);
+
+        if(i > 0) {
+            if(mMessages.get(i - 1).getSender().equals( chatMessage.getSender() )) {
+                sender.setVisibility(View.GONE);
+            }
+        }
 
         sender.setText(chatMessage.getSender());
         String lastMessageString = chatMessage.getMessage();
