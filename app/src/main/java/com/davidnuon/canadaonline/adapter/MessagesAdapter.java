@@ -71,6 +71,8 @@ public class MessagesAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_item_conversation, viewGroup, false);
 
+        String language = String.format("( %s ): ", chatMessage.getLanguage());
+
         TextView sender = (TextView) rowView.findViewById(R.id.conversation_name);
         TextView lastMessage = (TextView) rowView.findViewById(R.id.last_message);
 
@@ -80,9 +82,11 @@ public class MessagesAdapter extends BaseAdapter {
             }
         }
 
+
+
         sender.setText(chatMessage.getSender());
         String lastMessageString = chatMessage.getMessage();
-        lastMessage.setText(lastMessageString);
+        lastMessage.setText(language + lastMessageString);
 
         return rowView;
     }
