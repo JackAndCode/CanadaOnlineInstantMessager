@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.davidnuon.canadaonline.R;
@@ -20,6 +21,8 @@ public class MessagesAdapter extends BaseAdapter {
     public final String TAG = "CANADA/ConverstionAdapter";
     Context mContext;
     ArrayList<ChatMessage> mMessages;
+    ListView mListview;
+
 
     public MessagesAdapter(Context mContext, ArrayList<ChatMessage> mMessages) {
         this.mContext = mContext;
@@ -35,6 +38,22 @@ public class MessagesAdapter extends BaseAdapter {
         mMessages.clear();
         mMessages.addAll(other);
         notifyDataSetChanged();
+        if(mListview != null) {
+            mListview.post(new Runnable() {
+                @Override
+                public void run() {
+                    mListview.setSelection(mListview.getAdapter().getCount() - 1);
+                }
+            });
+        }
+    }
+
+    public ListView getmListview() {
+        return mListview;
+    }
+
+    public void setmListview(ListView mListview) {
+        this.mListview = mListview;
     }
 
     @Override

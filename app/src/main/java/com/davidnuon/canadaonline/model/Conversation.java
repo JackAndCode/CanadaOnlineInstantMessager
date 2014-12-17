@@ -42,6 +42,15 @@ public class Conversation {
         (new getMessage(conversationName, "android")).execute();
     }
 
+    public void refresh() {
+        // I should really just add an endpoint and poll for changes
+        // So it'd be sending just a byte over the wire instead of
+        // a giant blob...
+        // Sorry!
+        // (not sorry).
+        (new getMessage(conversationName, "android")).execute();
+    }
+
     public void addMessage(ChatMessage message) {
         this.messages.add(message);
     }
@@ -69,6 +78,7 @@ public class Conversation {
             super.onPostExecute(aVoid);
             if (mAdapter != null) {
                 mAdapter.adpot(messages);
+
             }
         }
 

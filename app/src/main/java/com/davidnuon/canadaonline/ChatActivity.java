@@ -28,6 +28,7 @@ public class ChatActivity extends ActionBarActivity {
         mListView.setAdapter(mAdapter);
         String name = getIntent().getStringExtra("name");
         mConversation = new Conversation(name, mAdapter);
+
     }
 
 
