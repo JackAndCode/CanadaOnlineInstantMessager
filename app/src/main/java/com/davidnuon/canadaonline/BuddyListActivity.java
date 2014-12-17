@@ -30,7 +30,7 @@ public class BuddyListActivity extends ActionBarActivity {
         ArrayList<Conversation> conversations = new ArrayList<>();
 
         conversations.add(new Conversation("Kelo"));
-        conversations.add(new Conversation("android"));
+        conversations.add(new Conversation("Henri"));
         conversations.add(new Conversation("David"));
 
         mConversationListAdapter = new ConverstionAdapter(this, conversations);

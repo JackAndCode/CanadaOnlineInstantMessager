@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
     android:background="#AAA"
     tools:context="com.davidnuon.canadaonline.ChatActivity">
 
@@ -22,10 +23,11 @@
         android:layout_marginBottom="1dp"
         android:layout_above="@+id/messageText" />
 
+
     <EditText
         android:background="#fff"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:id="@+id/messageText"
         android:hint="Party like it's 1999"
         android:padding="12dp"

@@ -2,8 +2,11 @@ package com.davidnuon.canadaonline;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.davidnuon.canadaonline.adapter.MessagesAdapter;
@@ -18,6 +21,7 @@ public class ChatActivity extends ActionBarActivity {
     Conversation mConversation;
     ListView mListView;
     MessagesAdapter mAdapter;
+    EditText mMessageInput;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +32,20 @@ public class ChatActivity extends ActionBarActivity {
         mListView.setAdapter(mAdapter);
         String name = getIntent().getStringExtra("name");
         mConversation = new Conversation(name, mAdapter);
+        mMessageInput = (EditText) findViewById(R.id.messageText);
+        mMessageInput.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if(keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                        mMessageInput.setText("");
+                    }
+                }
+
+                return false;
+            }
+        });
+
 
     }
 
