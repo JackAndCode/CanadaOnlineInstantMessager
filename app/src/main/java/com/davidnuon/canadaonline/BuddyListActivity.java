@@ -26,6 +26,8 @@ public class BuddyListActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buddy_list);
 
+        setTitle("Buddy List");
+
         Log.i(TAG, "Got here");
         ArrayList<Conversation> conversations = new ArrayList<>();
 

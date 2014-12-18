@@ -39,6 +39,8 @@ public class ChatActivity extends ActionBarActivity {
         mAdapter = new MessagesAdapter(this, new ArrayList<ChatMessage>());
         mListView.setAdapter(mAdapter);
         String name = getIntent().getStringExtra("name");
+
+        setTitle("Online: " + name);
         mConversation = new Conversation(name, mAdapter);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
